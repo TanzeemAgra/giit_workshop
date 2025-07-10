@@ -42,8 +42,8 @@ def get_role_response(prompt, chat_history, role):
 
     #Update Chat History
     update_history = chat_history if chat_history else []
-    update_history.append(["role":"user", "content": prompt])
-    update_history.append(["role":"assistant", "content": reply])
+    update_history.append({"role":"user", "content": prompt})
+    update_history.append({"role":"assistant", "content": reply})
 
     return reply, update_history
 
@@ -71,7 +71,58 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.
+st.title("Role-Based AI Assitant")
+st.markdown("---")
+
+#Initialise the session state
+if "role_chat_history" not in st.session_state:
+    st.session_state.role_chat_history = []
+if "selected_role" not in st.session_state:
+    st.session_state.selected_role = "Default"
+if "role_input_key" not in st.session_state:
+    st.session_state.role_input_key = 0
+
+
+#sidebar For Role Selection
+
+with st.sidebar:
+    st.header("Choose Your AI Assistant Role")
+
+    #Role Selection
+    selected_role = st.selectbox(
+        "Select a role:", 
+        list(ROLE_PROMPTS.keys()),
+        index=list(ROLE_PROMPTS.keys()).index(st.session_state.selected_role),
+        key="role_selector"
+    )
+
+    #if role Changed 
+    if selected_role != st.session_state.selected_role:
+        st.session_state.role_chat_history = []
+        st.session_state.selected_role = selected_role
+        st.session_state.role_input_key += 1
+        st.rerun
+    
+    #Display Current role info
+    st.markdown(f"""
+            <div class="role-card selected-role">
+                <h4> Current Role: {selected_role}</h4>
+                <p><em> {ROLE_PROMPTS[selected_role]}</em></p>
+            </div>
+            """, unsafe_allow_html=True)
+    #Role Describtion
+
+    st.markdown("Available Role")
+    for role, describtion in ROLE_PROMPTS.items():
+        emoji = {
+            "Default":"+",
+            "Teacher":"T",
+            "Doctor": "D",
+            "Lawyer":"L",
+            "Fitness Coach": "FC",
+            "Career Advisor": "CA",
+        }.get(role, "--")
+
 
 
 
