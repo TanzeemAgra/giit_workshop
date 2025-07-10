@@ -47,5 +47,31 @@ def get_role_response(prompt, chat_history, role):
 
     return reply, update_history
 
+#Streamlit
+st.set_page_config(page_title="Role_based AI Assitant", page_icon="-", layout="wide")
+
+#Custome CSS For Better Styling
+
+st.markdown("""
+<style>
+    .role-card {
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            margin: 0.5rem 0;
+            background: liner-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)
+        }
+    .selected-role {
+        border-color: #4CAF50;
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    }
+    .stSelectbox > div > div {
+        background-color: #f0f2f6;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.
+
 
 
