@@ -123,6 +123,10 @@ with st.sidebar:
             "Career Advisor": "CA",
         }.get(role, "--")
 
+        st.markdown(f"**{emoji} {role}**")
+        st.caption(describtion[:80] + "..." if len(describtion)>80 else describtion)
+        st.markdown("---")
+
 
 
 
