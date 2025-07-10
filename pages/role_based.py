@@ -164,6 +164,17 @@ with col1:
     else:
         st.info(f"Hello! I am your {selected_role} assistant. How can i help you today")
 
+    #Chat Inout Form 
+    with st.form(key="role_chat_form", clear_on_submit=True):
+        user_input = st.text_area(
+            f" Ask Your {selected_role}:", 
+            placeholder=f"Type your question for the {selected_role}...",
+            key=f"role_input_{st.session_state.role_input_key}",
+            height = 100
+        )
+
+
+
           
 
 
