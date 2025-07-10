@@ -173,6 +173,30 @@ with col1:
             height = 100
         )
 
+    if submit_button and user_input and user_input.strip():
+        with st.spinner(f"....{selected_role} is thinking..."):
+            try:
+                response, updated_history = get_role_response(
+                    user_input,
+                    st.session_state.role_chat_history,
+                    selected_role
+                )
+                st.session_state.role_chat_history = updated_history
+                st.session_state.role_input_key += 1
+                st.rerun()
+            except Exception as e:
+                st.error(f"❌ Error: {str(e)}")
+                st.error("Please check your OpenAI API key and internet connection.")
+
+with col2:
+    st.markdown("Session Stats")
+
+    total_messages = len(st.session_state.role_chat_history)
+    user_message = len(m for m in st.session_state.role_chat_history if m["role"] == "user")
+
+    st.metric("Total Messages", total_messages)
+    st.metric("Your Message", user_message)
+
 
 
           
