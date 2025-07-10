@@ -127,6 +127,48 @@ with st.sidebar:
         st.caption(describtion[:80] + "..." if len(describtion)>80 else describtion)
         st.markdown("---")
 
+        #Clear Conversation Button
+        if st.button("Clear Conversation", type="secondary"):
+            st.session_state.role_chat_history = []
+            st.session_state.role_input_key += 1
+            st.rerun()
+
+#Main Chat Interface
+col1, col2 = st.columns([3, 1])
+
+with col1:
+    #Display Current role prominently
+    role_emoji = {
+        "Default" : "%",
+        "Teacher" : "#",
+        "Doctor" : "@",
+        "Lawyer": "&",
+        "Fitness Coach": "!",
+        "Career Advisor": "|"
+    }.get(selected_role, "++")
+
+    st.markdown(f"### {role_emoji} Chatting with: **{selected_role}")
+
+    #Display Chat History
+
+    if st.session_state.role_chat_history:
+        st.markdown(" ## Conversation")
+
+        for i, message in enumerate(st.session_state.role_chat_history):
+            if message["role"] == "user":
+                with st.chat_message("user"):
+                    st.write(message['content'])
+            else:
+                with st.chat_message("assistant"):
+                    st.write(message['content'])
+    else:
+        st.info(f"Hello! I am your {selected_role} assistant. How can i help you today")
+
+          
+
+
+        
+
 
 
 
