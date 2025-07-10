@@ -19,3 +19,33 @@ ROLE_PROMPTS = {
     "Fitness Coach": "You are a motivating fitness coach who gives health and exercise guidance. Be encouraging, provide practical tips, and always emphasize safety and gradual progress.",
     "Career Advisor": "You are a career advisor helping people choose jobs and build resumes. Provide practical advice about career development, job searching, and professional growth."
 }
+
+
+def get_role_response(prompt, chat_history, role):
+    """Get Response with role =-specific system prompt"""
+    messages = [{"role": "system", "content": ROLE_PROMPTS[role]}]
+    #Add Chat History
+    if chat_history:
+        messages.extend(chat_history)
+
+    messages.append({"role": "user", "content": prompt})
+
+    from openai import OpenAI
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages= messages
+    )
+
+    reply = response.choices[0].messages.content
+
+    #Update Chat History
+    update_history = chat_history if chat_history else []
+    update_history.append(["role":"user", "content": prompt])
+    update_history.append(["role":"assistant", "content": reply])
+
+    return reply, update_history
+
+
+
