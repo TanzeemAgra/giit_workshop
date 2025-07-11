@@ -301,7 +301,28 @@ def main():
             "visual_characteristics": visual_characteristics,
             "demographics": demographics
         }
-        
+
+        # Generate Buttons
+        st.subheader("Generation Controls")
+
+        col_analysis, col_video = st.columns(2)
+        with col_analysis:
+            if st.button("Generate Analysis", disabled=not api_key):
+                if api_key and condition:
+                    st.session_state.disease_info = disease_info
+                    st.session_state.generate_analysis = True
+                else:
+                    st.error("Please enter the API Key and Disease Information")
+                
+        with col_video:
+            if st.button("Generate Video Frames", disabled=not api_key):
+                if api_key and condition:
+                    st.session_state.disease_info = disease_info
+                    st.session_state.generate_frames = True
+                    st.session_state.num_frames = num_frames
+                else:
+                    st.error("Please enter the API Key and Disease Information")
+
 
 
 
