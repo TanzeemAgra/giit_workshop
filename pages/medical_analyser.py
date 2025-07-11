@@ -1,5 +1,5 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 import requests
 from PIL import Image
 import io
@@ -32,7 +32,7 @@ def analyze_medical_image(image, analysis_type, api_key, model="gpt-4o"):
         base64_image = encode_image_to_base64(image)
         
         # Set up OpenAI client
-        openai.api_key = api_key
+        client = OpenAI(api_key=api_key)
         
         # Create specialized medical prompts
         medical_prompts = {
@@ -106,7 +106,7 @@ def analyze_medical_image(image, analysis_type, api_key, model="gpt-4o"):
         prompt = medical_prompts.get(analysis_type, medical_prompts["general_analysis"])
         
         # Create the message
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model=model,
             messages=[
                 {
