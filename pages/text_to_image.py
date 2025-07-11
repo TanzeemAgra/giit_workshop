@@ -1,5 +1,5 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 import requests
 from PIL import Image
 import io
@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 from dotenv import load_dotenv
 
-#Load Emnironemnt 
+#Load Environment 
 load_dotenv()
 
 #Configure Page
@@ -31,7 +31,8 @@ else:
     api_key = st.sidebar.text_input("OpenAI API Key", type="password", help="Enter Your OpenAI API Key")
 
 if api_key:
-    openai.api_key = api_key
+    # Initialize OpenAI client
+    client = OpenAI(api_key=api_key)
 
     #Image Generator Paramete
     st.sidebar.subheader("Generate Parameter")
@@ -93,3 +94,86 @@ with col1:
             "A modern minimalist living room with large windows"
         ]
     }
+
+    selected_category = st.selectbox("Category", list(sample_prompts.keys()))
+    selected_prompts = st.selectbox("Sample Prompt", sample_prompts[selected_category])
+
+    if st.button("Use This Prompt"):
+        st.session_state.prompt_text = selected_prompts
+
+    # Text Input
+    prompt = st.text_area(
+        "Custom Prompt:",
+        value=st.session_state.get('prompt_text', ''),
+        placeholder=" A scene landscape with moutain, a lake, and a sunset sky...",
+        height=150
+    )
+
+    # Generate Button
+    if st.button(" Generate Image", type="primary", disabled=not (api_key and prompt)):
+        if not api_key:
+            st.error("Please Enter Your OpenAI Key in the Sidebar")
+        elif not prompt:
+            st.error("Please Enter a text prompt")
+        else:
+            try:
+                with st.spinner("Generating Image...This may take a few seconds or while"):
+                    # Prepare parameters for the API call
+                    params = {
+                        "prompt": prompt,
+                        "model": model,
+                        "size": size,
+                        "n": n_images
+                    }
+                    
+                    # Add quality and style only for DALL-E 3
+                    if model == "dall-e-3":
+                        params["quality"] = quality
+                        params["style"] = style
+                    
+                    response = client.images.generate(**params)
+
+                    # Store Generated Images in session state
+                    st.session_state.generated_images = response.data
+                    st.session_state.current_prompt = prompt
+                    st.success("Image Generated Successfully")
+            except Exception as e:
+                st.error(f"Error Generating Image: {str(e)}")
+
+with col2:
+    st.subheader("Generated Images")
+
+    #Display Generated Images
+    if hasattr(st.session_state, 'generated_images') and st.session_state.generated_images:
+        for i, image_data in enumerate(st.session_state.generated_images):
+            try:
+                #Download and Display Image
+                image_response = requests.get(image_data.url)
+                image = Image.open(io.BytesIO(image_response.content))
+
+                st.image(image, caption=f"Generated Image {i+1}", use_column_width=True)
+
+                #Download Button
+                img_buffer = io.BytesIO()
+                image.save(img_buffer, format='PNG')
+                img_buffer.seek(0)
+
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"generated_image_{timestamp}_{i+1}.png"
+
+                st.download_button(
+                    label=f"Download Image",
+                    data=img_buffer.getvalue(),
+                    file_name=filename,
+                    mime="image/png"
+                )
+
+                #show prompt used 
+                if hasattr(st.session_state, 'current_prompt'):
+                    st.caption(f"Prompt: {st.session_state.current_prompt}")
+            except Exception as e:
+                st.error(f"Error Display Image {i+1}: {str(e)}")
+    else:
+        st.info("Generated Images will appear here")
+        
+
