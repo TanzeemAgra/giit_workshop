@@ -350,6 +350,31 @@ def main():
                 except Exception as e:
                     st.error(f"❌ Error: {str(e)}")
 
+        #Display Analysis
+        if hasattr(st.session_state, 'progression_analysis'):
+            st.markdown("Disease Progression Analysis")
+            with st.expander("View Full Analysis", expanded=True):
+                st.markdown(st.session_state.progression_analysis)
+
+         #Save analysis
+        if st.button("💾 Save Analysis Report"):
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"disease_progression_analysis_{timestamp}.txt"
+                
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(f"DISEASE PROGRESSION ANALYSIS REPORT\n")
+                f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                f.write(f"Disease: {st.session_state.disease_info['condition']}\n")
+                f.write(f"Location: {st.session_state.disease_info['location']}\n")
+                f.write(f"{'='*60}\n\n")
+                f.write(st.session_state.progression_analysis)
+                f.write(f"\n\n{'='*60}\n")
+                f.write("DISCLAIMER: This is educational content for medical professionals.\n")
+                
+            st.success(f"📄 Analysis saved as {filename}")
+
+
+
 
 
 
