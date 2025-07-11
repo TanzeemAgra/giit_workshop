@@ -167,3 +167,67 @@ def main():
     It should NOT be used for self-diagnosis or replace professional medical consultation. 
     Generated content is for educational purposes only and may not reflect individual patient variations.
     """)
+
+    #Side Bar Setting 
+    with st.sidebar:
+        st.header("Video Generation Setting")
+
+        #API Key
+        default_api_key = os.getenv("OPENAI_API_KEY", "")
+        if default_api_key:
+            st.success("API Key Loaded from Environment")
+            api_key = default_api_key
+        else:
+            api_key = st.text_input("OPENAI API KEY", type="password", help="Enter Your OpenAI API Key")
+        
+        #Selection Model
+        model = st.selectbox(
+            "AI Model",
+            ["gpt-4o","gpt-4o-mini","gpt-4-turbo"],
+            help="Choose the AI Model for Analysis"
+        
+        )
+
+        #Video Settings
+        st.subheader ("Video Parameter")
+        num_frames = st.slider("Number of Stages", 3,8,5, help="Number of progression stages to generate")
+        frame_duration = st.slider("Stahe Duration(seconds)", 1,10,3, help="How long the frame duration")
+
+        #Disease Category
+        st.subheader("Disease Categories")
+        disease_category = st.selectbox(
+            "Medical Specialty",
+            [
+                "Dermatology",
+                "Oncology", 
+                "Cardiology",
+                "Neurology",
+                "Ophthalmology",
+                "Orthopedics",
+                "Pulmonology",
+                "Gastroenterology",
+                "Infectious Disease",
+                "Rheumatology"
+            ]
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    main()
