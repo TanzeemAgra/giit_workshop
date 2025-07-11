@@ -73,3 +73,23 @@ col1, col2 = st.columns([1,1])
 
 with col1:
     st.subheader("Text Prompt")
+
+    #Sample Prompts
+    st.markdown("** Quick Start - Sample Prompts:**")
+    sample_prompts = {
+        "Landscapes": [
+            "A serene mountain landscape at sunset with a crystal-clear lake",
+            "A tropical beach with palm trees and turquoise water",
+            "A misty forest with tall pine trees and morning sunlight"
+        ],
+        "Fantasy": [
+            "A majestic dragon flying over a medieval castle",
+            "A magical forest with glowing mushrooms and fairy lights",
+            "A steampunk airship floating in cloudy skies"
+        ],
+        "Modern": [
+            "A futuristic cityscape with flying cars and neon lights",
+            "A cozy coffee shop with warm lighting and people reading",
+            "A modern minimalist living room with large windows"
+        ]
+    }
