@@ -157,4 +157,13 @@ def create_progression_analysis(disease_info, api_key, model="gpt-4o"):
         raise Exception (f"Error Generating Progress Analysis: {str(e)}")
 
 
+def main():
+    st.title("Disease Progress Video Generation")
+    st.markdown("Generate educational videos showin disease progression over time for medical education and patient understanding")
 
+    # Medical disclaimer
+    st.error("""
+    ⚠️ **MEDICAL DISCLAIMER**: This tool generates educational content for medical professionals and students. 
+    It should NOT be used for self-diagnosis or replace professional medical consultation. 
+    Generated content is for educational purposes only and may not reflect individual patient variations.
+    """)
