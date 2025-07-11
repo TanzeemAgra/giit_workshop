@@ -107,6 +107,33 @@ def add_stage_label(image, label_text):
     except Exception as e:
         st.error(f"Error adding Label: {str(e)}")
         return image
+    
+def create_progression_analysis(disease_info, api_key, model="gpt-4o"):
+    """Generate detailed analysis of disease progression"""
+    try:
+        openai.api_key = api_key
+
+        analysis_prompt = f"""
+        As a medical education specialist, provide a comprehensive analysis of {disease_info['condition']} progression:
+
+        **Disease:** {disease_info['condition']}
+        **Location:** {disease_info['location']}
+        **Patient Demographics:** {disease_info.get('demographics', 'General population')}
+
+        Please provide:
+        1. **Disease Overview**: Brief description of the condition
+        2. **Progression Timeline**: Typical timeline from onset to advanced stages
+        3. **Stage-by-Stage Analysis**: Detailed description of each progression stage
+        4. **Visual Changes**: How the appearance changes through each stage
+        5. **Symptoms Evolution**: How symptoms develop and worsen over time
+        6. **Risk Factors**: Factors that accelerate or influence progression
+        7. **Intervention Points**: Key stages where treatment can be most effective
+        8. **Prognosis**: Expected outcomes at different stages
+        9. **Educational Notes**: Important points for patients and healthcare providers
+
+        **Format**: Use clear medical terminology suitable for healthcare professionals while being educational.
+        **Disclaimer**: Include appropriate medical disclaimers about individual variation and professional consultation.
+        """
 
 
 
