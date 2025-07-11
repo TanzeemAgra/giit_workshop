@@ -76,6 +76,8 @@ def generate_disease_progress_frames(diseases_info, api_key, num_frames=5):
                     'stage_number': i+1
                 })
         return generated_frames
+    except Exception as e:
+        raise Exception(f"Error generating progress frame: {str(e)}")
         
 
 def add_stage_label(image, label_text):
