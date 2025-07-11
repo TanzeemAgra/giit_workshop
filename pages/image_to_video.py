@@ -271,6 +271,41 @@ def main():
             }
         }
 
+        #Select Diseases Example
+        if disease_category in disease_examples:
+            diseases_option = list(disease_examples[disease_category].keys())
+            selected_diseases = st.selectbox("Select Disease Example", diseases_option)
+            diseases_info = disease_examples[disease_category][selected_diseases]
+
+            #Display selected disease Info
+            st.json(diseases_info)
+        else:
+            diseases_info = {
+                "condition": "Custom Disease",
+                "location": "Specific Location",
+                "visual_characteristics": "Describe Visual Changes",
+                "demographics": "Target Population"
+            }
+
+        #Custom Disease Information
+        st.subheader("Custom Disease Configuration")
+        condition = st.text_input("Diseases/Condition", value=diseases_info["condition"])
+        location = st.text_input("Specifi Location", value=diseases_info["location"])
+        visual_characteristics = st.text_area("Visual Characteristics", value=diseases_info["visual_characteristics"])
+        demographics = st.text_input("Patient Demographics", value=diseases_info["demographics"])
+
+        #Update Disease Info
+        disease_info = {
+            "condition": condition,
+            "location": location,
+            "visual_characteristics": visual_characteristics,
+            "demographics": demographics
+        }
+        
+
+
+
+
 
 
 
