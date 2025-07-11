@@ -374,6 +374,38 @@ def main():
             st.success(f"📄 Analysis saved as {filename}")
 
 
+        #Display Video Frames
+        if hasattr(st.session_state, 'progression_frame'):
+            st.markdown("Disease Progression Frame")
+
+            #Display Frames in Sequence
+            for i, frame_data in enumerate(st.session_state.progression_frame):
+                st.markdown(f"** Stage {frame_data['stage_number']}:** {frame_data['stage']}")
+                st.image(frame_data['image'], caption=f"Stage {frame_data['stage_number']}", use_column_width=True)
+
+                # Download individual frame
+                img_buffer = io.BytesIO()
+                frame_data['image'].save(img_buffer, format='PNG')
+                img_buffer.seek(0)
+                
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"progression_stage_{frame_data['stage_number']}_{timestamp}.png"
+                
+                st.download_button(
+                    label=f"📥 Download Stage {frame_data['stage_number']}",
+                    data=img_buffer.getvalue(),
+                    file_name=filename,
+                    mime="image/png",
+                    key=f"download_{i}"
+                )
+                
+                st.markdown("---")
+
+
+
+
+
+
 
 
 
