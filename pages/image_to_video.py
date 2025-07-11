@@ -211,6 +211,68 @@ def main():
             ]
         )
 
+        #Main Content Area
+
+        col1, col2 = st.columns([1,1])
+
+        with col1:
+            st.subheader("Diseases Configuration")
+            # Pre-defined disease examples
+        disease_examples = {
+            "Dermatology": {
+                "Melanoma Progression": {
+                    "condition": "Melanoma",
+                    "location": "Skin lesion on back",
+                    "visual_characteristics": "Changing mole with irregular borders, color variation, and size increase",
+                    "demographics": "Adults 30-70 years"
+                },
+                "Psoriasis Development": {
+                    "condition": "Psoriasis",
+                    "location": "Elbow and knee areas",
+                    "visual_characteristics": "Red, scaly plaques with silvery scales",
+                    "demographics": "Adults 20-50 years"
+                }
+            },
+            "Oncology": {
+                "Breast Cancer Progression": {
+                    "condition": "Breast Cancer",
+                    "location": "Breast tissue",
+                    "visual_characteristics": "Tumor growth, tissue changes, lymph node involvement",
+                    "demographics": "Women 40-70 years"
+                },
+                "Lung Cancer Development": {
+                    "condition": "Lung Cancer",
+                    "location": "Lung tissue - chest X-ray view",
+                    "visual_characteristics": "Nodule growth, opacity changes, pleural involvement",
+                    "demographics": "Adults 50-80 years"
+                }
+            },
+            "Cardiology": {
+                "Atherosclerosis Progression": {
+                    "condition": "Atherosclerosis",
+                    "location": "Coronary artery",
+                    "visual_characteristics": "Plaque buildup, arterial narrowing, calcification",
+                    "demographics": "Adults 40-80 years"
+                }
+            },
+            "Ophthalmology": {
+                "Diabetic Retinopathy": {
+                    "condition": "Diabetic Retinopathy",
+                    "location": "Retina - fundus view",
+                    "visual_characteristics": "Microaneurysms, hemorrhages, neovascularization",
+                    "demographics": "Diabetic patients"
+                },
+                "Glaucoma Progression": {
+                    "condition": "Glaucoma",
+                    "location": "Optic nerve head",
+                    "visual_characteristics": "Optic disc cupping, nerve fiber layer thinning",
+                    "demographics": "Adults over 40"
+                }
+            }
+        }
+
+
+
 
 
 
