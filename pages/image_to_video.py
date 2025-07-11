@@ -213,11 +213,11 @@ def main():
 
         #Main Content Area
 
-        col1, col2 = st.columns([1,1])
+    col1, col2 = st.columns([1,1])
 
-        with col1:
-            st.subheader("Diseases Configuration")
-            # Pre-defined disease examples
+    with col1:
+        st.subheader("Diseases Configuration")
+        # Pre-defined disease examples
         disease_examples = {
             "Dermatology": {
                 "Melanoma Progression": {
@@ -322,6 +322,36 @@ def main():
                     st.session_state.num_frames = num_frames
                 else:
                     st.error("Please enter the API Key and Disease Information")
+
+    with col2:
+        st.subheader("Disease Progress Result")
+
+        #Generate Analysis
+        if hasattr(st.session_state, 'generate_analysis') and st.session_state.generate_analysis:
+            if st.button("Statrt Analysis Generation"):
+                try:
+                    with st.spinner("Generate Progress Analysis"):
+                        analysis = create_progression_analysis(st.session_state.disease_info, api_key, model)
+                        st.session_state.progression_analysis = analysis
+                        st.session_state.generate_analysis = False
+                        st.success("✅ Analysis generated successfully!")
+                except Exception as e:
+                    st.error(f"❌ Error: {str(e)}")
+
+        #Video Analysis
+        if hasattr(st.session_state, 'generate_frame') and st.session_state.generate_frame:
+            if st.button("Statrt Frame Generation"):
+                try:
+                    with st.spinner("Generate Frame"):
+                        frame = generate_disease_progress_frames(st.session_state.disease_info, api_key, st.session_state.num_frames)
+                        st.session_state.progression_frame = frame
+                        st.session_state.generate_frames = False
+                        st.success("✅ Video Frame generated successfully!")
+                except Exception as e:
+                    st.error(f"❌ Error: {str(e)}")
+
+
+
 
 
 
