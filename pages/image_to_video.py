@@ -130,10 +130,31 @@ def create_progression_analysis(disease_info, api_key, model="gpt-4o"):
         7. **Intervention Points**: Key stages where treatment can be most effective
         8. **Prognosis**: Expected outcomes at different stages
         9. **Educational Notes**: Important points for patients and healthcare providers
+        10. **Treatment Option**: recomend medical treatment option for disease
 
         **Format**: Use clear medical terminology suitable for healthcare professionals while being educational.
         **Disclaimer**: Include appropriate medical disclaimers about individual variation and professional consultation.
         """
+        response = openai.ChatCompletion.create(
+            model= model,
+            messages=[
+                {
+                    "role":"system",
+                    "content": "You are a medical education specialist with expertise in disease progression and pathology. Provide comprehensive, educational analysis for healthcare professional and medical students." 
+                    
+                },
+                {
+                    "role":"user",
+                    "content": analysis_prompt
+                }
+            ],
+            max_token=2000,
+            temperature=0.1
+        )
+
+        return response.choices[0].message.content
+    except Exception as e:
+        raise Exception (f"Error Generating Progress Analysis: {str(e)}")
 
 
 
