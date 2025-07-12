@@ -316,6 +316,41 @@ else:
                     "or try an example:",
                     [""] + example_questions
                )
+     # Process Question
+     if submit_button and user_question and user_question.strip():
+          with st.spinner("Searching through your PDF.."):
+               try:
+                    response, updated_history = get_pdf_based_response(
+                         user_question, st.session_state.pdf_contents,
+                         st.session_state.pdf_chat_history
+                    )
+                    st.session_state.pdf_chat_history = updated_history
+                    st.session_state.pdf_input_key += 1
+                    st.rerun
+               except Exception as e:
+                    st.error(f"Error: {str(e)}")
+
+    
+     with col2:
+          #Quick Action and Info
+          st.markdown("Quick Action")
+
+          if st.button("Clear History", type="secondary"):
+               st.session_state.pdg_chat_history = []
+               st.session_state.pdf_inout_key += 1
+               st.rerun
+
+        #chat Statistics
+          st.markdown("Chat Status")
+          total_message = len(st.session_state.pdf_chat_history)
+          user_message = len([m for m in st.session_state.pdf_chat_history if m["role"] == "user"])
+
+          st.metric("Total Messages", total_message)
+          st.metric("Question Asked", user_message)
+
+
+     
+        
           
 
 
