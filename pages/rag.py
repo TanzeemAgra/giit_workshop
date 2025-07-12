@@ -88,6 +88,82 @@ def get_pdf_based_response(question: str, pdf_contents: Dict[str, str], chat_his
      4. Be accurate and don't make up information not present in the PDFs
      5. If asked about something not in the PDFs, politely explain that you can only answer based on the uploaded documents
 
-     """
-           
+     
+    PDF CONTENT:
+    {combined_content}
+
+    Remeber: Answer ONLY based on the above pdf content."""
+     
+     #Prepare messages
+     messages = [{"role":"system", "content": system_prompt}]
+
+     #add chat History if available
+     if chat_history:
+          messages.extend(chat_history)
+
+     #Add Current Question
+     messages.append({"role":"user", "content": question})
+
+     try:
+          response = client.chat.completions.create(
+               model = "gpt-4",
+               messages=messages,
+               max_tokens = 1000,
+               temperature =0.3
+          )
+
+          reply = response.choices[0].message.content
+
+          # Update chat History
+          update_history = chat_history if chat_history else []
+          update_history.append({"role": "user", "content": question})
+          update_history.append({"role": "assistant", "content": reply})
+
+          return reply, update_history
+     except Exception as e:
+          error_msg = f"Error Getting Response: {str(e)}"
+          return error_msg, chat_history or []
+     
+#Streamlit App Configuration
+st.set_page_config(
+        page_title="PDF-Based AI Assistant", 
+        page_icon="+", 
+        layout="wide"
+    )
+
+# Custom CSS
+st.markdown("""
+<style>
+    .upload-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+    .pdf-card {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 10px;
+        border-left: 4px solid #28a745;
+        margin: 0.5rem 0;
+    }
+    .stats-card {
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        padding: 1rem;
+        border-radius: 10px;
+        text-align: center;
+    }
+    .warning-box {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
+
+
 
