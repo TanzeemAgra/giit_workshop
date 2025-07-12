@@ -219,6 +219,33 @@ with st.sidebar:
                          status_text.text(f"Process Failed")
                progress_bar.progress( "The progress of the file ")
                st.success(f"Successfully Processed")
+
+               #Display Loaded PDF
+
+               if st.session_state.pdf_contents:
+                    st.markdown(" Loaded Documents")
+                    for filename, content in st.session_state.pdf_contents.items():
+                         word_count = len(content.split())
+                         st.markdown(f"""
+                                     <div class="pdf-card">
+                                     <strong> {filename} </strong>
+                                     <small> {word_count:,} words extracted</small>
+                                     </div>
+                                     """, unsafe_allow_html=True)
+
+#Main Content Area
+if not st.session_state.pdf_Contents:
+     # Welcome screen
+    st.markdown("""
+    <div class="upload-section">
+        <h2 style="color: white; text-align: center;">📚 Welcome to PDF-Based AI Assistant</h2>
+        <p style="color: white; text-align: center; font-size: 1.2em;">
+            Upload your PDF documents and start asking questions based on their content!
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+     
+
                
 
                      
