@@ -163,6 +163,67 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+#Initialize the Session State
+
+if "pdf_contents" not in st.session_state:
+     st.session_state.pdf_contents = {}
+if "pdf_chat_history" not in st.session_state:
+     st.session_state.pdf_chat_history = []
+if "pdf_inout_key" not in st.session_state:
+     st.session_state.pdf_input_key = 0
+
+#Inititialise PDF Processor 
+
+pdf_processor = PDFProcessor()
+
+# Header
+st.title("📚 PDF-Based AI Assistant")
+st.markdown("Upload multiple PDFs and ask questions based on their content!")
+
+#Sidebar
+with st.sidebar:
+     st.header("PDF Document")
+
+     #File Uploader
+     uploaded_files = st.file_uploader(
+          "choose PDf files",
+          type="pdf",
+          accept_multiple_files=True,
+          help="Upload One or more PDF Files to Analyse"
+     )
+
+     #Process Uploaded Files
+     if uploaded_files:
+          progress_bar = st.progress(0)
+          status_text = st.empty()
+
+          for i, uploaded_file in enumerate(uploaded_files):
+               status_text.text(f"Processing {uploaded_files.name}...")
+
+               #Check if file is already processed 
+               file_hash = pdf_processor.get_file_hash(uploaded_file)
+               cached_data = pdf_processor.load_cached_content(file_hash)
+
+               if cached_data:
+                    st.session_state.pdf_contents[uploaded_file.name] = cached_data['content']
+                    status_text.text(f"Loaded from cache: {uploaded_file.name}")
+               else:
+                    # Extract TExt
+                    extracted_text = pdf_processor.extract_text_from_pdf(uploaded_file)
+                    if extracted_text:
+                         st.session_state.pdf_contents[uploaded_file.name] = extracted_text
+                         # Cache the Contents
+                         pdf_processor.cache_pdf_content(file_hash, extracted_text, uploaded_file.name)
+                         status_text.text = (f" Process Successful ")
+                    else:
+                         status_text.text(f"Process Failed")
+               progress_bar.progress( "The progress of the file ")
+               st.success(f"Successfully Processed")
+               
+
+                     
+                
+
 
 
 
