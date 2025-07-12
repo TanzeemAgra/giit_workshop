@@ -244,7 +244,43 @@ if not st.session_state.pdf_Contents:
         </p>
     </div>
     """, unsafe_allow_html=True)
+
+    st.markdown("How to get Started:")
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+         st.markdown("""
+                     1. Uploaded PDF
+                     - USe the sidebar to upload one or more pdf files
+                     - Suported Format : PDF Only """
+                     )
+    with col2:
+         st.markdown("""
+                     - Ask Question.
+                     - Ask Specific Question
+                     - Get Precise document based response """
+                     )
+    with col3:
+        st.markdown("""
+                     - What is the main topic discuss.
+                     - Conclusion 
+                     - Summary """
+                     )
      
+else:
+     #Chat Interface
+     col1, col2 = st.columns([3,1])
+
+     with col1:
+          st.markdown("Ask Question About Your PDF")
+
+          #warning about PDF Only
+          st.markdown("""
+        <div class="warning-box">
+            <strong>⚠️ Important:</strong> This AI assistant will only answer questions based on the content of your uploaded PDF documents. 
+            If information is not available in the PDFs, the assistant will clearly state so.
+        </div>
+        """, unsafe_allow_html=True)
 
                
 
