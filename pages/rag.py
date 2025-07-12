@@ -281,6 +281,45 @@ else:
             If information is not available in the PDFs, the assistant will clearly state so.
         </div>
         """, unsafe_allow_html=True)
+          
+        #Display Chat History
+     if st.session_state.pdf_chat_history:
+          for message in st.session_state.pdf_chat_history:
+               if message["role"] =="user":
+                    with st.chat_message("user"):
+                         st.write(message['content'])
+               else:
+                    with st.chat_message("assistant"):
+                         st.write(message['content'])
+     #Chat Input
+     with st.form(key="pdf_chat_form", clear_on_submit=True):
+          user_question = st.text_area(
+               "Ask a Question about PDF:",
+               placeholder="e.g, what are the main findings in the document?",
+               key=f"pdf_input_{st.session_state.pdf_input_key}",
+               height=100
+          )
+
+          col_send, col_examples = st.columns([1,3])
+
+          with col_send:
+               submit_button = st.form_submit_button("Ask Question", type="primary")
+
+          with col_examples:
+               example_questions = [
+                    "Summarize the main points",
+                    "What conclusions are drwan",
+                    "Any Recomendations mentioned"
+               ]
+
+               selected_example = st.selectbox(
+                    "or try an example:",
+                    [""] + example_questions
+               )
+          
+
+
+
 
                
 
